@@ -5,7 +5,7 @@ pipeline {
 			registry = "prempalsingh/devops"
 			registryCredential = "DOCKERHUB_CRED"
 			dockerImage = ''
-			namespace = ${project}
+			namespace = "${project}"
 			
 			
 		}
