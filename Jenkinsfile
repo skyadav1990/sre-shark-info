@@ -1,9 +1,13 @@
 pipeline {
 	agent any
 		environment {
+			project = "shark-info"
 			registry = "prempalsingh/devops"
 			registryCredential = "DOCKERHUB_CRED"
 			dockerImage = ''
+			namespace = ${project}
+			
+			
 		}
 	   stages {
 			stage("Build Docker Image") {
@@ -23,10 +27,12 @@ pipeline {
 				}
 			}
 		   
-		   	stage('Deploy App') {
+		   	stage('Deploy Application') {
       			steps {
         			script {
-          				sh 'kubectl apply -f  nginxhome.yml'
+						sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
+						sh("kubectl config set-context --current --namespace=${namespace}")
+          				sh("kubectl apply -f deploy.yml")
 					}
 				}
 			}

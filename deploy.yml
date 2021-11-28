@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginxhome
+  name: shark-info
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nginxhome-app
+      app: shark-app
   template:
     metadata:
-      name: nginxhome-pod
+      name: shark-pod
       labels:
-        app: nginxhome-app
+        app: shark-app
     spec:
       containers:
-      - name: nginxhome-container
-        image: sre/nginxhome:latest
+      - name: shark-container
+        image: prempalsingh/devops:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -25,12 +25,12 @@ spec:
 apiVersion: v1
 kind: Service 
 metadata:
-  name: nginxhome-svc
+  name: shark-svc
   labels:
-    app: nginxhome-app
+    app: shark-app
 spec:
   selector:
-    app: nginxhome-app
+    app: shark-app
   type: NodePort
   ports:
   - nodePort: 31113
