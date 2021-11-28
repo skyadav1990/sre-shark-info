@@ -33,7 +33,6 @@ pipeline {
         			script {
 						sh("sed -i.bak 's#${registry}:latest#${registry}:${imageTag}#' deploy.yml")
 						sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
-						#sh("kubectl config set-context --current --namespace=${namespace}")
 						sh("kubectl --namespace=${namespace} apply -f deploy.yml")
 					}
 				}
