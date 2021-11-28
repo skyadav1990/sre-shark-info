@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxhome
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginxhome-app
+  template:
+    metadata:
+      name: nginxhome-pod
+      labels:
+        app: nginxhome-app
+    spec:
+      containers:
+      - name: nginxhome-container
+        image: sre/nginxhome:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+---
+
+apiVersion: v1
+kind: Service 
+metadata:
+  name: nginxhome-svc
+  labels:
+    app: nginxhome-app
+spec:
+  selector:
+    app: nginxhome-app
+  type: NodePort
+  ports:
+  - nodePort: 31113
+    port: 80
+    targetPort: 80
