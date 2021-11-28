@@ -6,6 +6,7 @@ pipeline {
 			registryCredential = "DOCKERHUB_CRED"
 			dockerImage = ''
 			namespace = "${project}"
+			imageTag = "${BUILD_NUMBER}"
 			
 			
 		}
@@ -13,7 +14,7 @@ pipeline {
 			stage("Build Docker Image") {
 				steps {
 					script {
-						dockerImage = docker.build registry + ":$BUILD_NUMBER"
+						dockerImage = docker.build registry + ":$imageTag"
 					}
 				}
 			}
@@ -30,9 +31,10 @@ pipeline {
 		   	stage('Deploy Application') {
       			steps {
         			script {
+						sh("sed -i.bak 's#${registry}:latest#${registry}:${imageTag}#' deploy.yml")
 						sh("kubectl get ns ${namespace} || kubectl create ns ${namespace}")
-						sh("kubectl config set-context --current --namespace=${namespace}")
-          				sh("kubectl apply -f deploy.yml")
+						#sh("kubectl config set-context --current --namespace=${namespace}")
+						sh("kubectl --namespace=${namespace} apply -f deploy.yml")
 					}
 				}
 			}
