@@ -2,7 +2,7 @@ pipeline {
 	agent any
 		environment {
 			project = "shark-info"
-			registry = "dockerhub-user-name/registry-name"
+			registry = "dockerhub-skyadav1990/registry-name"
 			registryCredential = "DOCKERHUB_CRED"
 			dockerImage = ''
 			namespace = "${project}"
